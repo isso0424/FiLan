@@ -1,3 +1,4 @@
+// Package domain is package for defining domains
 package domain
 
 import "time"
