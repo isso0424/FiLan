@@ -8,9 +8,9 @@ import (
 )
 
 type testFile struct {
-	Name string
-	Size uint64
-	Path string
+	Name      string
+	Size      uint64
+	Path      string
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -40,9 +40,9 @@ func assertFunction(file domain.File) {
 
 func TestFileDomain(t *testing.T) {
 	file := testFile{
-		Name: "example",
-		Size: 100,
-		Path: "foo/bar",
+		Name:      "example",
+		Size:      100,
+		Path:      "foo/bar",
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
