@@ -36,7 +36,6 @@ func (file testFile) GetUpdatedAt() time.Time {
 }
 
 func assertFunction(file domain.File) {
-	return
 }
 
 func TestFileDomain(t *testing.T) {
