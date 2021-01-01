@@ -4,10 +4,10 @@ import "time"
 
 // File is domain for file object
 type File interface {
-	getName() string
-	getSize() uint64
-	getPath() string
+	GetName() string
+	GetSize() uint64
+	GetPath() string
 
-	getCreatedAt() time.Time
-	getUpdatedAt() time.Time
+	GetCreatedAt() time.Time
+	GetUpdatedAt() time.Time
 }
