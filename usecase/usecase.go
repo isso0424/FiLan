@@ -3,17 +3,9 @@ package usecase
 
 import "FiLan/domain"
 
-// FileSaver is interface for file saving method
-type FileSaver interface {
-	SaveFile(data []byte, name string, path string) domain.File
-}
-
-// FileDeleter is interface for file deleting method
-type FileDeleter interface {
-	DeleteFile(name string, path string) domain.File
-}
-
-// FileGetter is interface for file getting
-type FileGetter interface {
-	GetFile(name string, path string) domain.File
+// Filer is interface for file managing
+type Filer interface {
+	SaveFile(data []byte, name string, path string) (domain.File, error)
+	DeleteFile(name string, path string) (domain.File, error)
+	GetFile(name string, path string) (domain.File, error)
 }
