@@ -38,15 +38,15 @@ func (file testFile) GetUpdatedAt() time.Time {
 	return file.UpdatedAt
 }
 
-func (file testFiler)SaveFile(data []byte, name string, path string) domain.File {
+func (file testFiler) SaveFile(data []byte, name string, path string) domain.File {
 	return testFile{}
 }
 
-func (file testFiler)DeleteFile(name string, path string) domain.File {
+func (file testFiler) DeleteFile(name string, path string) domain.File {
 	return testFile{}
 }
 
-func (file testFiler)GetFile(name string, path string) domain.File {
+func (file testFiler) GetFile(name string, path string) domain.File {
 	return testFile{}
 }
 
