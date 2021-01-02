@@ -15,5 +15,5 @@ type FileDeleter interface {
 
 // FileGetter is interface for file getting
 type FileGetter interface {
-	Get(name string, path string) domain.File
+	GetFile(name string, path string) domain.File
 }
