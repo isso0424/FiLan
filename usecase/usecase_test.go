@@ -7,7 +7,7 @@ import (
 	"FiLan/usecase"
 )
 
-type testFiler struct {}
+type testFiler struct{}
 
 func (file testFiler) SaveFile(data []byte, name string, path string) domain.File {
 	return domain.File{}
