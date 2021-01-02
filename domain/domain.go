@@ -3,12 +3,12 @@ package domain
 
 import "time"
 
-// File is domain for file object
-type File interface {
-	GetName() string
-	GetSize() uint64
-	GetPath() string
+// File is domain struct for file object
+type File struct {
+	Name string
+	Size uint64
+	Path string
 
-	GetCreatedAt() time.Time
-	GetUpdatedAt() time.Time
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
