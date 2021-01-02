@@ -6,8 +6,8 @@ import "time"
 // File is domain struct for file object
 type File struct {
 	Name string
-	Size uint64
 	Path string
+	Data []byte
 
 	CreatedAt time.Time
 	UpdatedAt time.Time
