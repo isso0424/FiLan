@@ -1,3 +1,4 @@
+// Package repository provides definition for repository
 package repository
 
 import "FiLan/domain"
@@ -6,6 +7,6 @@ import "FiLan/domain"
 type FileRepository interface {
 	Save(file domain.File)
 	Delete(file domain.File)
-	GetByName(path string) domain.File
+	GetByFullPath(path string) domain.File
 	GetByDir(path string) []domain.File
 }
