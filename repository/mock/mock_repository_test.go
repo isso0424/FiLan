@@ -90,7 +90,6 @@ func TestSearchByFullPath(t *testing.T) {
 	if err == nil {
 		t.Fatal("error should occur with invalid path")
 	}
-
 }
 
 func TestSearchByDir(t *testing.T) {
