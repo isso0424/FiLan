@@ -7,11 +7,16 @@ import (
 	"FiLan/usecase"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
 	"gorm.io/gorm"
 )
 
-// nolint:unused
-var controller usecase.Filer
+const logFormat = "Endpoint: %s Status: %d Description: %s\n"
+
+var (
+	controller usecase.Filer
+	decoder    = schema.NewDecoder()
+)
 
 // Serve is function lanching server
 func Serve(dbfile string, storageDir string) error {
