@@ -14,3 +14,7 @@ linters:
     - "testpackage"
     - "nakedret"
     - "ineffassign"
+    - "paralleltest"
+    - "gci"
+    - "forbidigo"
+    - "wrapcheck"

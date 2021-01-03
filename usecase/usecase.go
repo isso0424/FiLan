@@ -8,4 +8,5 @@ type Filer interface {
 	SaveFile(data []byte, name string, path string) (domain.File, error)
 	DeleteFile(name string, path string) (domain.File, error)
 	GetFile(name string, path string) (domain.File, error)
+	GetFiles(path string) ([]domain.File, error)
 }

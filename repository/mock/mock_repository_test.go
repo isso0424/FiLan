@@ -1,11 +1,11 @@
 package mock_test
 
 import (
+	"FiLan/domain"
+	"FiLan/repository"
+	"FiLan/repository/mock"
 	"testing"
 	"time"
-
-	"FiLan/domain"
-	"FiLan/repository/mock"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -178,4 +178,12 @@ func TestDelete(t *testing.T) {
 	if err == nil {
 		t.Fatal("error should occur with invalid target")
 	}
+}
+
+func assertion(repo repository.FileRepository) {
+}
+
+func TestMockImplementing(t *testing.T) {
+	repo := mock.New()
+	assertion(repo)
 }
