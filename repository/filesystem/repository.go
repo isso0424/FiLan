@@ -38,8 +38,8 @@ func (repo Repository) Save(file domain.File) error {
 }
 
 // Delete is method deleting file from local storage
-func (repo Repository) Delete(file domain.File) error {
-	filePath := path.Join(repo.StorageDir, file.Path, file.Name)
+func (repo Repository) Delete(fullPath string) error {
+	filePath := path.Join(repo.StorageDir, fullPath)
 	return os.Remove(filePath)
 }
 

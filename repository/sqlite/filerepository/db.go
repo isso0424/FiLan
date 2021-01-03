@@ -2,6 +2,7 @@ package filerepository
 
 import (
 	"FiLan/domain"
+	"path"
 	"strings"
 )
 
@@ -44,7 +45,10 @@ func convertFullPath(fullpath string) (string, string) {
 
 // Save is file saving function to db
 func (repo FileRepository) Save(file domain.File) error {
-	// TODO: save to local file
+	err := repo.FileSystemRepository.Save(file)
+	if err != nil {
+		return err
+	}
 
 	model := convertDomainToModel(file)
 	return repo.DB.Create(&model).Error
@@ -52,18 +56,20 @@ func (repo FileRepository) Save(file domain.File) error {
 
 // Delete is file deleting function from db
 func (repo FileRepository) Delete(fullPath string) error {
-	// TODO: delete from localfile
 	path, fileName := convertFullPath(fullPath)
 
-	result := repo.DB.Where("path = ?", path).Where("name = ?", fileName).Delete(&fileModel{})
+	err := repo.DB.Where("path = ?", path).Where("name = ?", fileName).Delete(&fileModel{}).Error
+	if err != nil {
+		return err
+	}
 
-	return result.Error
+	err = repo.FileSystemRepository.Delete(fullPath)
+
+	return err
 }
 
 // GetByFullPath is file getter function from db
 func (repo FileRepository) GetByFullPath(fullPath string) (domain.File, error) {
-	// TODO: data get from localfile
-
 	path, fileName := convertFullPath(fullPath)
 	var receiver fileModel
 
@@ -72,23 +78,29 @@ func (repo FileRepository) GetByFullPath(fullPath string) (domain.File, error) {
 		return domain.File{}, err
 	}
 
-	data := make([]byte, receiver.Size)
+	file, err := repo.FileSystemRepository.GetByFullPath(fullPath)
+	if err != nil {
+		return domain.File{}, err
+	}
 
-	return convertModelToDomain(receiver, data), nil
+	return convertModelToDomain(receiver, file.Data), nil
 }
 
 // GetByDir is files getter function from db
-func (repo FileRepository) GetByDir(path string) (files []domain.File, err error) {
+func (repo FileRepository) GetByDir(dir string) (files []domain.File, err error) {
 	var receiver []fileModel
-	err = repo.DB.Where("path = ?", path).Find(&receiver).Error
+	err = repo.DB.Where("path = ?", dir).Find(&receiver).Error
 	if err != nil {
 		return
 	}
 
 	for _, file := range receiver {
-		// TODO: data get from localfile
-		data := make([]byte, file.Size)
-		files = append(files, convertModelToDomain(file, data))
+		filePath := path.Join(dir, file.Name)
+		fileData, err := repo.FileSystemRepository.GetByFullPath(filePath)
+		if err != nil {
+			return files, err
+		}
+		files = append(files, convertModelToDomain(file, fileData.Data))
 	}
 
 	return

@@ -1,6 +1,7 @@
 package filerepository
 
 import (
+	"FiLan/repository/filesystem"
 	"time"
 
 	"gorm.io/driver/sqlite"
@@ -20,7 +21,7 @@ type fileModel struct {
 // FileRepository is repository of file with gorm and sqlite
 type FileRepository struct {
 	DB *gorm.DB
-	StorageDir string
+	FileSystemRepository filesystem.Repository
 }
 
 // New is FileRepository constructor
@@ -31,7 +32,9 @@ func New(fileName string, storageDir string, config *gorm.Config) (FileRepositor
 	}
 	db.AutoMigrate(&fileModel{})
 
-	repo := FileRepository{ DB: db, StorageDir: storageDir }
+	fsRepo := filesystem.Repository{ StorageDir: storageDir }
+
+	repo := FileRepository{ DB: db, FileSystemRepository: fsRepo }
 
 	return repo, nil
 }
