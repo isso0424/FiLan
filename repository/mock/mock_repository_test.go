@@ -86,12 +86,53 @@ func TestSearch(t *testing.T) {
 	assert.Equal(t, searched.CreatedAt, repo.Files[0].CreatedAt)
 	assert.Equal(t, searched.UpdatedAt, repo.Files[0].UpdatedAt)
 
+	searched, err = repo.GetByFullPath("invalid/file")
+	if err == nil {
+		t.Fatal("error should occur with invalid path")
+	}
+
+	secondFile := domain.File{
+		Name:      "fuga",
+		Path:      "foo/bar",
+		Data:      []byte("example"),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	err = repo.Save(secondFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	searchedList, err := repo.GetByDir("foo/bar")
-	assert.Equal(t, searchedList[0].Name, repo.Files[0].Name)
-	assert.Equal(t, searchedList[0].Path, repo.Files[0].Path)
-	assert.Equal(t, string(searchedList[0].Data), string(repo.Files[0].Data))
-	assert.Equal(t, searchedList[0].CreatedAt, repo.Files[0].CreatedAt)
-	assert.Equal(t, searchedList[0].UpdatedAt, repo.Files[0].UpdatedAt)
+	if err != nil {
+		t.Fatal(err)
+	}
+	assert.Equal(t, searchedList[1].Name, repo.Files[1].Name)
+	assert.Equal(t, searchedList[1].Path, repo.Files[1].Path)
+	assert.Equal(t, string(searchedList[1].Data), string(repo.Files[1].Data))
+	assert.Equal(t, searchedList[1].CreatedAt, repo.Files[1].CreatedAt)
+	assert.Equal(t, searchedList[1].UpdatedAt, repo.Files[1].UpdatedAt)
+
+	thirdFile := domain.File{
+		Name:      "fuga",
+		Path:      "bar/foo",
+		Data:      []byte("example"),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	err = repo.Save(thirdFile)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	searchedList, err = repo.GetByDir("foo/bar")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	assert.Equal(t, len(searchedList), 2)
 }
 
 func TestDelete(t *testing.T) {
@@ -116,4 +157,8 @@ func TestDelete(t *testing.T) {
 	}
 
 	assert.Equal(t, len(repo.Files), 0)
+	err = repo.Delete("invalid/file")
+	if err == nil {
+		t.Fatal("error should occur with invalid target")
+	}
 }
