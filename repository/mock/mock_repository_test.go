@@ -60,7 +60,7 @@ func TestSave(t *testing.T) {
 	}
 }
 
-func TestSearch(t *testing.T) {
+func TestSearchByFullPath(t *testing.T) {
 	repo := mock.New()
 
 	file := domain.File{
@@ -89,6 +89,24 @@ func TestSearch(t *testing.T) {
 	searched, err = repo.GetByFullPath("invalid/file")
 	if err == nil {
 		t.Fatal("error should occur with invalid path")
+	}
+
+}
+
+func TestSearchByDir(t *testing.T) {
+	repo := mock.New()
+
+	file := domain.File{
+		Name:      "hoge",
+		Path:      "foo/bar",
+		Data:      []byte("example"),
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+
+	err := repo.Save(file)
+	if err != nil {
+		t.Fatal(err)
 	}
 
 	secondFile := domain.File{
