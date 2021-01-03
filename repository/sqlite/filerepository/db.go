@@ -8,19 +8,19 @@ import (
 
 func convertDomainToModel(file domain.File) fileModel {
 	return fileModel{
-		Name: file.Name,
-		Size: len(file.Data),
-		Path: file.Path,
-		AddedAt: file.CreatedAt,
+		Name:        file.Name,
+		Size:        len(file.Data),
+		Path:        file.Path,
+		AddedAt:     file.CreatedAt,
 		RefreshedAt: file.UpdatedAt,
 	}
 }
 
 func convertModelToDomain(model fileModel, data []byte) domain.File {
 	return domain.File{
-		Name: model.Name,
-		Data: data,
-		Path: model.Path,
+		Name:      model.Name,
+		Data:      data,
+		Path:      model.Path,
 		CreatedAt: model.AddedAt,
 		UpdatedAt: model.RefreshedAt,
 	}
@@ -51,6 +51,7 @@ func (repo FileRepository) Save(file domain.File) error {
 	}
 
 	model := convertDomainToModel(file)
+
 	return repo.DB.Create(&model).Error
 }
 

@@ -1,3 +1,4 @@
+// Package filerepository is repository for sqlite and gorm
 package filerepository
 
 import (
@@ -14,13 +15,13 @@ type fileModel struct {
 	Path string
 	Size int
 
-	AddedAt time.Time
+	AddedAt     time.Time
 	RefreshedAt time.Time
 }
 
 // FileRepository is repository of file with gorm and sqlite
 type FileRepository struct {
-	DB *gorm.DB
+	DB                   *gorm.DB
 	FileSystemRepository filesystem.Repository
 }
 
@@ -30,11 +31,14 @@ func New(fileName string, storageDir string, config *gorm.Config) (FileRepositor
 	if err != nil {
 		return FileRepository{}, nil
 	}
-	db.AutoMigrate(&fileModel{})
+	err = db.AutoMigrate(&fileModel{})
+	if err != nil {
+		return FileRepository{}, err
+	}
 
-	fsRepo := filesystem.Repository{ StorageDir: storageDir }
+	fsRepo := filesystem.Repository{StorageDir: storageDir}
 
-	repo := FileRepository{ DB: db, FileSystemRepository: fsRepo }
+	repo := FileRepository{DB: db, FileSystemRepository: fsRepo}
 
 	return repo, nil
 }

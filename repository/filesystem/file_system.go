@@ -8,5 +8,5 @@ type Repository struct {
 
 // New is constructor for repository filesystem
 func New(storageDir string) Repository {
-	return Repository{ StorageDir: storageDir }
+	return Repository{StorageDir: storageDir}
 }
