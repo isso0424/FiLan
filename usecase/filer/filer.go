@@ -30,3 +30,8 @@ func (filer *Filer) DeleteFile(name string, path string) (domain.File, error) {
 func (filer *Filer) GetFile(name string, path string) (domain.File, error) {
 	return domain.File{}, nil
 }
+
+// GetFiles is method getting files by path
+func (filer *Filer) GetFiles(path string) ([]domain.File, error) {
+	return []domain.File{}, nil
+}
