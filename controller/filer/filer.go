@@ -27,20 +27,40 @@ func (filer *Filer) SaveFile(data []byte, name string, path string) (domain.File
 		UpdatedAt: time.Now(),
 	}
 	err := filer.FileRepository.Save(file)
+
 	return file, err
 }
 
 // DeleteFile is method deleteing file
 func (filer *Filer) DeleteFile(name string, path string) (domain.File, error) {
-	return domain.File{}, nil
+	fullpath := joinPath(name, path)
+	file, err := filer.FileRepository.GetByFullPath(fullpath)
+	if err != nil {
+		return file, err
+	}
+	err = filer.FileRepository.Delete(fullpath)
+
+	return file, err
 }
 
 // GetFile is method getting file
 func (filer *Filer) GetFile(name string, path string) (domain.File, error) {
-	return domain.File{}, nil
+	fullpath := joinPath(name, path)
+
+	return filer.FileRepository.GetByFullPath(fullpath)
 }
 
 // GetFiles is method getting files by path
 func (filer *Filer) GetFiles(path string) ([]domain.File, error) {
-	return []domain.File{}, nil
+	return filer.FileRepository.GetByDir(path)
+}
+
+func joinPath(name string, path string) string {
+	fullpath := path
+	if (fullpath != "") {
+		fullpath += "/"
+	}
+	fullpath += name
+
+	return fullpath
 }

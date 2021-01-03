@@ -2,7 +2,7 @@ package filer_test
 
 import (
 	"FiLan/repository/mock"
-	"FiLan/usecase/filer"
+	"FiLan/controller/filer"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
