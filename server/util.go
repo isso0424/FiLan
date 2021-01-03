@@ -3,9 +3,11 @@ package server
 import (
 	"FiLan/domain"
 	"encoding/base64"
+	"log"
+	"net/http"
 )
 
-// nolint:deadcode
+// nolint:unused,deadcode
 func convertModelToDomain(model fileModel) domain.File {
 	decoded, _ := base64.RawStdEncoding.DecodeString(model.Encoded)
 
@@ -25,5 +27,16 @@ func convertDomainToModel(file domain.File) fileModel {
 		Encoded:   base64.StdEncoding.EncodeToString(file.Data),
 		CreatedAt: file.CreatedAt,
 		UpdatedAt: file.UpdatedAt,
+	}
+}
+
+// nolint:unparam
+func handlerRequestError(w http.ResponseWriter, endpoint string, statusCode int, errorMessage string) {
+	log.Printf(logFormat, endpoint, http.StatusBadRequest, errorMessage)
+
+	w.WriteHeader(http.StatusBadRequest)
+	_, err := w.Write([]byte(errorMessage))
+	if err != nil {
+		log.Println(err)
 	}
 }

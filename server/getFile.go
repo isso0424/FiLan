@@ -13,26 +13,14 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(name, r.URL.Query())
 	if err != nil {
 		errorMessage := "Need query parameter: name"
-		log.Printf(logFormat, endpoint, http.StatusBadRequest, errorMessage)
-
-		w.WriteHeader(http.StatusBadRequest)
-		_, err = w.Write([]byte(errorMessage))
-		if err != nil {
-			log.Println(err)
-		}
+		handlerRequestError(w, endpoint, http.StatusBadRequest, errorMessage)
 
 		return
 	}
 	err = decoder.Decode(path, r.URL.Query())
 	if err != nil {
 		errorMessage := "Need query parameter: path"
-		log.Printf(logFormat, endpoint, http.StatusBadRequest, errorMessage)
-
-		w.WriteHeader(http.StatusBadRequest)
-		_, err = w.Write([]byte(errorMessage))
-		if err != nil {
-			log.Println(err)
-		}
+		handlerRequestError(w, endpoint, http.StatusBadRequest, errorMessage)
 
 		return
 	}
@@ -40,12 +28,7 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := controller.GetFile(name, path)
 	if err != nil {
 		errorMessage := "Not found"
-		log.Printf(logFormat, endpoint, http.StatusNotFound, errorMessage)
-		w.WriteHeader(http.StatusNotFound)
-		_, err = w.Write([]byte(errorMessage))
-		if err != nil {
-			log.Println(err)
-		}
+		handlerRequestError(w, endpoint, http.StatusNotFound, errorMessage)
 
 		return
 	}
@@ -53,13 +36,10 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	model := convertDomainToModel(file)
 	encoded, err := json.Marshal(model)
 	if err != nil {
-		errorMessage := "Not found"
-		log.Printf(logFormat, endpoint, http.StatusInternalServerError, errorMessage)
-		w.WriteHeader(http.StatusInternalServerError)
-		_, err = w.Write([]byte("Error occur pasing json"))
-		if err != nil {
-			log.Println(err)
-		}
+		errorMessage := "error occur in json pasing"
+		handlerRequestError(w, endpoint, http.StatusInternalServerError, errorMessage)
+
+		return
 	}
 
 	_, err = w.Write(encoded)
