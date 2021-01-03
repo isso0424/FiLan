@@ -2,6 +2,7 @@
 package filer
 
 import (
+	"time"
 	"FiLan/domain"
 	"FiLan/repository"
 )
@@ -18,7 +19,15 @@ func New(repository repository.FileRepository) *Filer {
 
 // SaveFile is method saving file
 func (filer *Filer) SaveFile(data []byte, name string, path string) (domain.File, error) {
-	return domain.File{}, nil
+	file := domain.File{
+		Name: name,
+		Path: path,
+		Data: data,
+		CreatedAt: time.Now(),
+		UpdatedAt: time.Now(),
+	}
+	err := filer.FileRepository.Save(file)
+	return file, err
 }
 
 // DeleteFile is method deleteing file
