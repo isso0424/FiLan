@@ -13,3 +13,4 @@ linters:
     - "godot"
     - "testpackage"
     - "nakedret"
+    - "ineffassign"

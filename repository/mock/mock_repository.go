@@ -1,3 +1,4 @@
+// Package mock provides mock struct for FileRepository
 package mock
 
 import (
@@ -12,7 +13,7 @@ type FileRepository struct {
 
 // New is constructor for Mock FileRepository
 func New() *FileRepository {
-	return &FileRepository{ Files: []domain.File{} }
+	return &FileRepository{Files: []domain.File{}}
 }
 
 type err struct {
@@ -25,13 +26,13 @@ func (e err) Error() string {
 
 func convertFullPath(fullpath string) (string, string) {
 	dirs := strings.Split(fullpath, "/")
-	fileName := dirs[len(dirs) - 1]
+	fileName := dirs[len(dirs)-1]
 	path := ""
 	for index, dir := range dirs {
-		if (index == len(dirs) - 1) {
+		if index == len(dirs)-1 {
 			break
 		}
-		if (index != 0) {
+		if index != 0 {
 			path += "/"
 		}
 		path += dir
@@ -42,11 +43,11 @@ func convertFullPath(fullpath string) (string, string) {
 
 // Save is file save function
 func (repo *FileRepository) Save(file domain.File) error {
-	if (len(file.Data) == 0) {
-		return err{ Message: "file size 0 is not supported" }
+	if len(file.Data) == 0 {
+		return err{Message: "file size 0 is not supported"}
 	}
-	if (file.Name == "") {
-		return err{ Message: "file must not empty string" }
+	if file.Name == "" {
+		return err{Message: "file must not empty string"}
 	}
 	repo.Files = append(repo.Files, file)
 
@@ -57,33 +58,33 @@ func (repo *FileRepository) Save(file domain.File) error {
 func (repo *FileRepository) Delete(fullPath string) error {
 	path, fileName := convertFullPath(fullPath)
 	for index, file := range repo.Files {
-		if (file.Path == path && file.Name == fileName) {
-			repo.Files[index] = repo.Files[len(repo.Files) - 1]
-			repo.Files = repo.Files[:len(repo.Files) - 1]
+		if file.Path == path && file.Name == fileName {
+			repo.Files[index] = repo.Files[len(repo.Files)-1]
+			repo.Files = repo.Files[:len(repo.Files)-1]
 			return nil
 		}
 	}
 
-	return err { Message: "target does not found" }
+	return err{Message: "target does not found"}
 }
 
 // GetByFullPath is file getting function by fullpath
 func (repo *FileRepository) GetByFullPath(fullPath string) (domain.File, error) {
 	path, fileName := convertFullPath(fullPath)
 	for _, file := range repo.Files {
-		if (file.Path == path && file.Name == fileName) {
+		if file.Path == path && file.Name == fileName {
 			return file, nil
 		}
 	}
 
-	return domain.File {}, err { Message: "target does not found" }
+	return domain.File{}, err{Message: "target does not found"}
 }
 
 // GetByDir is file getting function by dir
 func (repo *FileRepository) GetByDir(path string) ([]domain.File, error) {
 	result := []domain.File{}
 	for _, file := range repo.Files {
-		if (file.Path == path) {
+		if file.Path == path {
 			result = append(result, file)
 		}
 	}

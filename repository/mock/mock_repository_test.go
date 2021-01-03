@@ -20,15 +20,15 @@ func TestSave(t *testing.T) {
 	repo := mock.New()
 
 	file := domain.File{
-		Name: "hoge",
-		Path: "foo/bar",
-		Data: []byte("example"),
+		Name:      "hoge",
+		Path:      "foo/bar",
+		Data:      []byte("example"),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 
 	err := repo.Save(file)
-	if (err != nil) {
+	if err != nil {
 		t.Fatal(err)
 	}
 
@@ -42,20 +42,20 @@ func TestSave(t *testing.T) {
 	file.Name = ""
 
 	err = repo.Save(file)
-	if (err == nil) {
+	if err == nil {
 		t.Fatal("error should occur in file name being empty")
 	}
 
 	file.Name = "hoge"
 	file.Path = ""
 	err = repo.Save(file)
-	if (err != nil) {
+	if err != nil {
 		t.Fatal(err)
 	}
 
 	file.Data = []byte{}
 	err = repo.Save(file)
-	if (err == nil) {
+	if err == nil {
 		t.Fatal("error should occur in data being empty")
 	}
 }
@@ -64,20 +64,20 @@ func TestSearch(t *testing.T) {
 	repo := mock.New()
 
 	file := domain.File{
-		Name: "hoge",
-		Path: "foo/bar",
-		Data: []byte("example"),
+		Name:      "hoge",
+		Path:      "foo/bar",
+		Data:      []byte("example"),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 
 	err := repo.Save(file)
-	if (err != nil) {
+	if err != nil {
 		t.Fatal(err)
 	}
 
 	searched, err := repo.GetByFullPath("foo/bar/hoge")
-	if (err != nil) {
+	if err != nil {
 		t.Fatal(err)
 	}
 	assert.Equal(t, searched.Name, repo.Files[0].Name)
@@ -98,20 +98,20 @@ func TestDelete(t *testing.T) {
 	repo := mock.New()
 
 	file := domain.File{
-		Name: "hoge",
-		Path: "foo/bar",
-		Data: []byte("example"),
+		Name:      "hoge",
+		Path:      "foo/bar",
+		Data:      []byte("example"),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
 
 	err := repo.Save(file)
-	if (err != nil) {
+	if err != nil {
 		t.Fatal(err)
 	}
 
 	err = repo.Delete("foo/bar/hoge")
-	if (err != nil) {
+	if err != nil {
 		t.Fatal(err)
 	}
 
