@@ -1,3 +1,4 @@
+// Package server is server functions with gorilla
 package server
 
 import (
@@ -9,8 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// nolint:unused
 var controller usecase.Filer
 
+// Serve is function lanching server
 func Serve(dbfile string, storageDir string) error {
 	repo, err := filerepository.New(dbfile, storageDir, &gorm.Config{})
 	if err != nil {
