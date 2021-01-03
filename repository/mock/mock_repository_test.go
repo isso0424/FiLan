@@ -1,12 +1,11 @@
 package mock_test
 
 import (
-	"testing"
-	"time"
-
 	"FiLan/domain"
 	"FiLan/repository"
 	"FiLan/repository/mock"
+	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )

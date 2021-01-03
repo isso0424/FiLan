@@ -61,6 +61,7 @@ func (repo *FileRepository) Delete(fullPath string) error {
 		if file.Path == path && file.Name == fileName {
 			repo.Files[index] = repo.Files[len(repo.Files)-1]
 			repo.Files = repo.Files[:len(repo.Files)-1]
+
 			return nil
 		}
 	}

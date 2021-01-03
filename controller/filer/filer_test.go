@@ -1,11 +1,16 @@
 package filer_test
 
 import (
-	"FiLan/repository/mock"
 	"FiLan/controller/filer"
+	"FiLan/repository/mock"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+)
+
+const (
+	name = "hoge"
+	path = "foo/bar"
 )
 
 type testError struct {
@@ -20,8 +25,6 @@ func TestSavingFileSuccess(t *testing.T) {
 	mockRepository := mock.New()
 	controller := filer.New(mockRepository)
 	data := []byte("example")
-	name := "hoge"
-	path := "foo/bar"
 
 	file, err := controller.SaveFile(data, name, path)
 	if err != nil {
@@ -37,19 +40,17 @@ func TestSavingFileFail(t *testing.T) {
 	mockRepository := mock.New()
 	controller := filer.New(mockRepository)
 	data := []byte("example")
-	name := "hoge"
-	path := "foo/bar"
 
 	invalidData := []byte{}
 	_, err := controller.SaveFile(invalidData, name, path)
 	if err == nil {
-		t.Fatal(testError{ Message: "error should occur with invalid data length: 0" })
+		t.Fatal(testError{Message: "error should occur with invalid data length: 0"})
 	}
 
 	invalidName := ""
 	_, err = controller.SaveFile(data, invalidName, path)
 	if err == nil {
-		t.Fatal(testError{ Message: "error should occur with invalid name: empty string" })
+		t.Fatal(testError{Message: "error should occur with invalid name: empty string"})
 	}
 }
 
@@ -57,8 +58,6 @@ func TestDeletingSuccess(t *testing.T) {
 	mockRepository := mock.New()
 	controller := filer.New(mockRepository)
 	data := []byte("example")
-	name := "hoge"
-	path := "foo/bar"
 
 	_, err := controller.SaveFile(data, name, path)
 	if err != nil {
@@ -78,7 +77,7 @@ func TestDeletingFail(t *testing.T) {
 	invalidPath := "example/invalid"
 	_, err := controller.DeleteFile(invalidName, invalidPath)
 	if err == nil {
-		t.Fatal(testError{ Message: "error should occur with invalid full path" })
+		t.Fatal(testError{Message: "error should occur with invalid full path"})
 	}
 }
 
@@ -86,8 +85,6 @@ func TestGettingSuccess(t *testing.T) {
 	mockRepository := mock.New()
 	controller := filer.New(mockRepository)
 	data := []byte("example")
-	name := "hoge"
-	path := "foo/bar"
 
 	_, err := controller.SaveFile(data, name, path)
 	if err != nil {
@@ -112,7 +109,7 @@ func TestGettingFail(t *testing.T) {
 
 	_, err := controller.GetFile(invalidName, invalidPath)
 	if err == nil {
-		t.Fatal(testError{ Message: "error occur with invalid path" })
+		t.Fatal(testError{Message: "error occur with invalid path"})
 	}
 }
 
@@ -120,8 +117,6 @@ func TestGettingFilesSuccess(t *testing.T) {
 	mockRepository := mock.New()
 	controller := filer.New(mockRepository)
 	data := []byte("example")
-	name := "hoge"
-	path := "foo/bar"
 
 	_, err := controller.SaveFile(data, name, path)
 	if err != nil {
