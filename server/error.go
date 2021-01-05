@@ -13,6 +13,4 @@ func queryNotEnoughError(
 ) {
 	errorMessage := fmt.Sprintf("Need query parameter: %s", query)
 	handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
-
-	return
 }
