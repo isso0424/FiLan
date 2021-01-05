@@ -8,19 +8,20 @@ import (
 
 func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	const endpoint = "/file"
+	const method = "GET"
 	var name string
 	var path string
 	err := decoder.Decode(name, r.URL.Query())
 	if err != nil {
 		errorMessage := "Need query parameter: name"
-		handlerRequestError(w, endpoint, http.StatusBadRequest, errorMessage)
+		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
 
 		return
 	}
 	err = decoder.Decode(path, r.URL.Query())
 	if err != nil {
 		errorMessage := "Need query parameter: path"
-		handlerRequestError(w, endpoint, http.StatusBadRequest, errorMessage)
+		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
 
 		return
 	}
@@ -28,7 +29,7 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := controller.GetFile(name, path)
 	if err != nil {
 		errorMessage := "Not found"
-		handlerRequestError(w, endpoint, http.StatusNotFound, errorMessage)
+		handlerRequestError(w, endpoint, method, http.StatusNotFound, errorMessage)
 
 		return
 	}
@@ -37,7 +38,7 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	encoded, err := json.Marshal(model)
 	if err != nil {
 		errorMessage := "error occur in json pasing"
-		handlerRequestError(w, endpoint, http.StatusInternalServerError, errorMessage)
+		handlerRequestError(w, endpoint, method, http.StatusInternalServerError, errorMessage)
 
 		return
 	}

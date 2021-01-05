@@ -3,6 +3,7 @@ package server
 import (
 	"FiLan/domain"
 	"encoding/base64"
+	"encoding/json"
 	"log"
 	"net/http"
 )
@@ -31,11 +32,27 @@ func convertDomainToModel(file domain.File) fileModel {
 }
 
 // nolint:unparam
-func handlerRequestError(w http.ResponseWriter, endpoint string, statusCode int, errorMessage string) {
+func handlerRequestError(w http.ResponseWriter, endpoint string, method string, statusCode int, errorMessage string) {
 	log.Printf(logFormat, endpoint, http.StatusBadRequest, errorMessage)
 
 	w.WriteHeader(http.StatusBadRequest)
 	_, err := w.Write([]byte(errorMessage))
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func domainWritebackToClient(file domain.File, w http.ResponseWriter, endpoint string, method string) {
+	model := convertDomainToModel(file)
+	encoded, err := json.Marshal(model)
+	if err != nil {
+		errorMessage := "error occur in json pasing"
+		handlerRequestError(w, endpoint, method, http.StatusInternalServerError, errorMessage)
+
+		return
+	}
+
+	_, err = w.Write(encoded)
 	if err != nil {
 		log.Println(err)
 	}
