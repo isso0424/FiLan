@@ -13,15 +13,14 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	var path string
 	err := decoder.Decode(name, r.URL.Query())
 	if err != nil {
-		errorMessage := "Need query parameter: name"
-		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
+		queryNotEnoughError(w, endpoint, method, "name")
 
 		return
 	}
+
 	err = decoder.Decode(path, r.URL.Query())
 	if err != nil {
-		errorMessage := "Need query parameter: path"
-		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
+		queryNotEnoughError(w, endpoint, method, "path")
 
 		return
 	}
