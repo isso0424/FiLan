@@ -16,5 +16,5 @@ type FileAccessRepository interface {
 	Save(file domain.File) error
 	Delete(fullPath string) error
 	GetByFullPath(path string) ([]byte, error)
-	GetByDir(path string) ([]byte, error)
+	GetByDir(path string) ([][]byte, error)
 }
