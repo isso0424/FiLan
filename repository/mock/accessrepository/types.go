@@ -8,20 +8,12 @@ import (
 
 // MockRepository is mock for FileAccessRepository
 type MockRepository struct {
-	files []domain.File
+	Files []domain.File
 }
 
 // New is constructor for MockRepository
 func New() MockRepository {
-	return MockRepository{files: []domain.File{}}
-}
-
-type invalidPathError struct {
-	path string
-}
-
-func (err invalidPathError) Error() string {
-	return fmt.Sprintf("The path %s is invalid", err.path)
+	return MockRepository{Files: []domain.File{}}
 }
 
 type notFoundError struct {
