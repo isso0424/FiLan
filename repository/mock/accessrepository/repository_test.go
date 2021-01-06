@@ -78,6 +78,9 @@ func TestFileDeletingSuccess(t *testing.T) {
 	assert.Equal(t, "hoge", string(repo.Files[0].Data))
 
 	err = repo.Delete("foo/bar/fuga")
+	if err != nil {
+		t.Fatal(err)
+	}
 	assert.Equal(t, 0, len(repo.Files))
 }
 
@@ -106,6 +109,9 @@ func TestFileGettingByFullPathSuccess(t *testing.T) {
 	}
 
 	data, err = repo.GetByFullPath("bar/fuga")
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	assert.Equal(t, "hogehoge", string(data))
 }

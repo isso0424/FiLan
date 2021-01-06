@@ -10,14 +10,15 @@ import (
 func (repo *MockRepository) Save(file domain.File) error {
 	replaced := false
 	for index, f := range repo.Files {
-		if (file.Name == f.Name && file.Path == f.Path) {
+		if file.Name == f.Name && file.Path == f.Path {
 			replaced = true
 			repo.Files[index] = file
+
 			break
 		}
 	}
 
-	if (!replaced) {
+	if !replaced {
 		repo.Files = append(repo.Files, file)
 	}
 
