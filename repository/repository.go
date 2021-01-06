@@ -10,3 +10,11 @@ type FileRepository interface {
 	GetByFullPath(path string) (domain.File, error)
 	GetByDir(path string) ([]domain.File, error)
 }
+
+// FileAccessRepository is file "access" managing repository
+type FileAccessRepository interface {
+	Save(file domain.File) error
+	Delete(fullPath string) error
+	GetByFullPath(path string) ([]byte, error)
+	GetByDir(path string) ([][]byte, error)
+}

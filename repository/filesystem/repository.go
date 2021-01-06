@@ -5,25 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"strings"
 )
-
-func convertFullPath(fullpath string) (string, string) {
-	dirs := strings.Split(fullpath, "/")
-	fileName := dirs[len(dirs)-1]
-	path := ""
-	for index, dir := range dirs {
-		if index == len(dirs)-1 {
-			break
-		}
-		if index != 0 {
-			path += "/"
-		}
-		path += dir
-	}
-
-	return path, fileName
-}
 
 // Save is method saving file to local storage
 func (repo Repository) Save(file domain.File) error {
@@ -45,30 +27,23 @@ func (repo Repository) Delete(fullPath string) error {
 }
 
 // GetByFullPath is method getting file from local storage
-func (repo Repository) GetByFullPath(fullpath string) (domain.File, error) {
+func (repo Repository) GetByFullPath(fullpath string) (data []byte, err error) {
 	fullPath := path.Join(repo.StorageDir, fullpath)
 	f, err := os.Open(fullPath)
 	if err != nil {
-		return domain.File{}, err
+		return
 	}
 
-	dir, name := convertFullPath(fullpath)
-
-	file := domain.File{
-		Name: name,
-		Path: dir,
-	}
-
-	_, err = f.Read(file.Data)
+	_, err = f.Read(data)
 	if err != nil {
-		return file, err
+		return
 	}
 
-	return file, nil
+	return
 }
 
 // GetByDir is method getting files from local storage
-func (repo Repository) GetByDir(dir string) (domains []domain.File, err error) {
+func (repo Repository) GetByDir(dir string) (data [][]byte, err error) {
 	fullPath := path.Join(repo.StorageDir, dir)
 	files, err := ioutil.ReadDir(fullPath)
 	if err != nil {
@@ -76,21 +51,18 @@ func (repo Repository) GetByDir(dir string) (domains []domain.File, err error) {
 	}
 
 	for _, file := range files {
-		newFile := domain.File{
-			Name: file.Name(),
-			Path: dir,
-		}
+		newFile := []byte{}
 		filePath := path.Join(fullPath, file.Name())
 		f, err := os.Open(filePath)
 		if err != nil {
-			return domains, err
+			return data, err
 		}
-		_, err = f.Read(newFile.Data)
+		_, err = f.Read(newFile)
 		if err != nil {
-			return domains, err
+			return data, err
 		}
 
-		domains = append(domains, newFile)
+		data = append(data, newFile)
 	}
 
 	return

@@ -79,12 +79,12 @@ func (repo FileRepository) GetByFullPath(fullPath string) (domain.File, error) {
 		return domain.File{}, err
 	}
 
-	file, err := repo.FileSystemRepository.GetByFullPath(fullPath)
+	data, err := repo.FileSystemRepository.GetByFullPath(fullPath)
 	if err != nil {
 		return domain.File{}, err
 	}
 
-	return convertModelToDomain(receiver, file.Data), nil
+	return convertModelToDomain(receiver, data), nil
 }
 
 // GetByDir is files getter function from db
@@ -97,11 +97,11 @@ func (repo FileRepository) GetByDir(dir string) (files []domain.File, err error)
 
 	for _, file := range receiver {
 		filePath := path.Join(dir, file.Name)
-		fileData, err := repo.FileSystemRepository.GetByFullPath(filePath)
+		data, err := repo.FileSystemRepository.GetByFullPath(filePath)
 		if err != nil {
 			return files, err
 		}
-		files = append(files, convertModelToDomain(file, fileData.Data))
+		files = append(files, convertModelToDomain(file, data))
 	}
 
 	return

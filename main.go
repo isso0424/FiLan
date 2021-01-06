@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"FiLan/server"
+)
 
 func main() {
-	fmt.Println("Hello world")
+	err := server.Serve("db.sqlite3", "~/.filan/storage")
+	if err != nil {
+		panic(err)
+	}
 }
