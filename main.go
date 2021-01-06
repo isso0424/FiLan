@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"FiLan/server"
+)
 
 func main() {
-	fmt.Println("Hello world")
+	server.Serve("db.sqlite3", "~/.filan/storage")
 }
