@@ -5,25 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
-	"strings"
 )
-
-func convertFullPath(fullpath string) (string, string) {
-	dirs := strings.Split(fullpath, "/")
-	fileName := dirs[len(dirs)-1]
-	path := ""
-	for index, dir := range dirs {
-		if index == len(dirs)-1 {
-			break
-		}
-		if index != 0 {
-			path += "/"
-		}
-		path += dir
-	}
-
-	return path, fileName
-}
 
 // Save is method saving file to local storage
 func (repo Repository) Save(file domain.File) error {
@@ -45,7 +27,7 @@ func (repo Repository) Delete(fullPath string) error {
 }
 
 // GetByFullPath is method getting file from local storage
-func (repo Repository) GetByFullPath(fullpath string) (data []byte,err error) {
+func (repo Repository) GetByFullPath(fullpath string) (data []byte, err error) {
 	fullPath := path.Join(repo.StorageDir, fullpath)
 	f, err := os.Open(fullPath)
 	if err != nil {

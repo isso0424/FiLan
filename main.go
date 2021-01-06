@@ -5,5 +5,8 @@ import (
 )
 
 func main() {
-	server.Serve("db.sqlite3", "~/.filan/storage")
+	err := server.Serve("db.sqlite3", "~/.filan/storage")
+	if err != nil {
+		panic(err)
+	}
 }
