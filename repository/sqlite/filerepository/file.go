@@ -2,6 +2,7 @@
 package filerepository
 
 import (
+	"FiLan/repository"
 	"FiLan/repository/filesystem"
 	"time"
 
@@ -22,7 +23,7 @@ type fileModel struct {
 // FileRepository is repository of file with gorm and sqlite
 type FileRepository struct {
 	DB                   *gorm.DB
-	FileSystemRepository filesystem.Repository
+	FileSystemRepository repository.FileAccessRepository
 }
 
 // New is FileRepository constructor
