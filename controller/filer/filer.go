@@ -31,7 +31,7 @@ type emptyData struct {
 }
 
 func (err emptyData) Error() string {
-	return fmt.Sprint("Cannot save empty data")
+	return "Cannot save empty data"
 }
 
 type invalidFilePath struct {
@@ -55,20 +55,20 @@ func checkPathIsValid(path string) bool {
 
 // SaveFile is method saving file
 func (filer *Filer) SaveFile(data []byte, name string, path string) (file domain.File, err error) {
-	if (strings.Contains(name, "/") || name == "") {
-		err = invalidFileName{ fileName: name }
+	if strings.Contains(name, "/") || name == "" {
+		err = invalidFileName{fileName: name}
 
 		return
 	}
 
-	if (len(data) == 0) {
+	if len(data) == 0 {
 		err = emptyData{}
 
 		return
 	}
 
-	if (!checkPathIsValid(path)) {
-		err = invalidFilePath{ filePath: path }
+	if !checkPathIsValid(path) {
+		err = invalidFilePath{filePath: path}
 
 		return
 	}
@@ -87,14 +87,14 @@ func (filer *Filer) SaveFile(data []byte, name string, path string) (file domain
 
 // DeleteFile is method deleting file
 func (filer *Filer) DeleteFile(name string, path string) (file domain.File, err error) {
-	if (strings.Contains(name, "/") || name == "") {
-		err = invalidFileName{ fileName: name }
+	if strings.Contains(name, "/") || name == "" {
+		err = invalidFileName{fileName: name}
 
 		return
 	}
 
-	if (!checkPathIsValid(path)) {
-		err = invalidFilePath{ filePath: path }
+	if !checkPathIsValid(path) {
+		err = invalidFilePath{filePath: path}
 
 		return
 	}
@@ -111,14 +111,14 @@ func (filer *Filer) DeleteFile(name string, path string) (file domain.File, err 
 
 // GetFile is method getting file
 func (filer *Filer) GetFile(name string, path string) (file domain.File, err error) {
-	if (strings.Contains(name, "/") || name == "") {
-		err = invalidFileName{ fileName: name }
+	if strings.Contains(name, "/") || name == "" {
+		err = invalidFileName{fileName: name}
 
 		return
 	}
 
-	if (!checkPathIsValid(path)) {
-		err = invalidFilePath{ filePath: path }
+	if !checkPathIsValid(path) {
+		err = invalidFilePath{filePath: path}
 
 		return
 	}
@@ -132,8 +132,8 @@ func (filer *Filer) GetFile(name string, path string) (file domain.File, err err
 
 // GetFiles is method getting files by path
 func (filer *Filer) GetFiles(path string) (files []domain.File, err error) {
-	if (!checkPathIsValid(path)) {
-		err = invalidFilePath{ filePath: path }
+	if !checkPathIsValid(path) {
+		err = invalidFilePath{filePath: path}
 
 		return
 	}
