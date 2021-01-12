@@ -20,7 +20,7 @@ type fileModel struct {
 
 // FileRepository is repository of file with gorm and sqlite
 type FileRepository struct {
-	DB                   *gorm.DB
+	DB *gorm.DB
 }
 
 // New is FileRepository constructor

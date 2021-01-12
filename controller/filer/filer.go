@@ -3,15 +3,15 @@ package filer
 
 import (
 	"FiLan/domain"
-	"FiLan/repository"
 	"FiLan/errors"
+	"FiLan/repository"
 	"strings"
 	"time"
 )
 
 // Filer is struct implementing Filer usecase
 type Filer struct {
-	FileRepository repository.FileRepository
+	FileRepository   repository.FileRepository
 	AccessRepository repository.FileAccessRepository
 }
 
@@ -117,7 +117,7 @@ func (filer *Filer) GetFile(name string, path string) (file domain.File, err err
 	if err != nil {
 		return
 	}
-	file.Data , err = filer.AccessRepository.GetByFullPath(fullpath)
+	file.Data, err = filer.AccessRepository.GetByFullPath(fullpath)
 
 	return
 }
