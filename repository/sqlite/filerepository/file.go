@@ -2,8 +2,6 @@
 package filerepository
 
 import (
-	"FiLan/repository"
-	"FiLan/repository/filesystem"
 	"time"
 
 	"gorm.io/driver/sqlite"
@@ -23,11 +21,10 @@ type fileModel struct {
 // FileRepository is repository of file with gorm and sqlite
 type FileRepository struct {
 	DB                   *gorm.DB
-	FileSystemRepository repository.FileAccessRepository
 }
 
 // New is FileRepository constructor
-func New(fileName string, storageDir string, config *gorm.Config) (FileRepository, error) {
+func New(fileName string, config *gorm.Config) (FileRepository, error) {
 	db, err := gorm.Open(sqlite.Open(fileName), config)
 	if err != nil {
 		return FileRepository{}, nil
@@ -37,9 +34,7 @@ func New(fileName string, storageDir string, config *gorm.Config) (FileRepositor
 		return FileRepository{}, err
 	}
 
-	fsRepo := filesystem.Repository{StorageDir: storageDir}
-
-	repo := FileRepository{DB: db, FileSystemRepository: fsRepo}
+	repo := FileRepository{DB: db}
 
 	return repo, nil
 }

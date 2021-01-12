@@ -2,7 +2,6 @@ package filerepository
 
 import (
 	"FiLan/domain"
-	"path"
 	"strings"
 )
 
@@ -16,10 +15,9 @@ func convertDomainToModel(file domain.File) fileModel {
 	}
 }
 
-func convertModelToDomain(model fileModel, data []byte) domain.File {
+func convertModelToDomain(model fileModel) domain.File {
 	return domain.File{
 		Name:      model.Name,
-		Data:      data,
 		Path:      model.Path,
 		CreatedAt: model.AddedAt,
 		UpdatedAt: model.RefreshedAt,
@@ -45,11 +43,6 @@ func convertFullPath(fullpath string) (string, string) {
 
 // Save is file saving function to db
 func (repo FileRepository) Save(file domain.File) error {
-	err := repo.FileSystemRepository.Save(file)
-	if err != nil {
-		return err
-	}
-
 	model := convertDomainToModel(file)
 
 	return repo.DB.Create(&model).Error
@@ -64,8 +57,6 @@ func (repo FileRepository) Delete(fullPath string) error {
 		return err
 	}
 
-	err = repo.FileSystemRepository.Delete(fullPath)
-
 	return err
 }
 
@@ -79,12 +70,7 @@ func (repo FileRepository) GetByFullPath(fullPath string) (domain.File, error) {
 		return domain.File{}, err
 	}
 
-	data, err := repo.FileSystemRepository.GetByFullPath(fullPath)
-	if err != nil {
-		return domain.File{}, err
-	}
-
-	return convertModelToDomain(receiver, data), nil
+	return convertModelToDomain(receiver), nil
 }
 
 // GetByDir is files getter function from db
@@ -96,12 +82,7 @@ func (repo FileRepository) GetByDir(dir string) (files []domain.File, err error)
 	}
 
 	for _, file := range receiver {
-		filePath := path.Join(dir, file.Name)
-		data, err := repo.FileSystemRepository.GetByFullPath(filePath)
-		if err != nil {
-			return files, err
-		}
-		files = append(files, convertModelToDomain(file, data))
+		files = append(files, convertModelToDomain(file))
 	}
 
 	return
