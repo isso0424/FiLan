@@ -3,6 +3,7 @@ package server
 
 import (
 	"FiLan/controller/filer"
+	"FiLan/repository/filesystem"
 	"FiLan/repository/sqlite/filerepository"
 	"FiLan/usecase"
 
@@ -20,11 +21,12 @@ var (
 
 // Serve is function lanching server
 func Serve(dbfile string, storageDir string) error {
-	repo, err := filerepository.New(dbfile, storageDir, &gorm.Config{})
+	accessRepository := filesystem.New(storageDir)
+	repo, err := filerepository.New(dbfile, &gorm.Config{})
 	if err != nil {
 		return err
 	}
-	controller = filer.New(repo)
+	controller = filer.New(repo, accessRepository)
 
 	router := mux.NewRouter()
 
