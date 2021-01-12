@@ -4,7 +4,7 @@ package filer
 import (
 	"FiLan/domain"
 	"FiLan/repository"
-	"fmt"
+	"FiLan/errors"
 	"strings"
 	"time"
 )
@@ -17,29 +17,6 @@ type Filer struct {
 // New is constructor for Filer
 func New(repository repository.FileRepository) *Filer {
 	return &Filer{FileRepository: repository}
-}
-
-type invalidFileName struct {
-	fileName string
-}
-
-func (err invalidFileName) Error() string {
-	return fmt.Sprintf("Invalid file name: %s", err.fileName)
-}
-
-type emptyData struct {
-}
-
-func (err emptyData) Error() string {
-	return "Cannot save empty data"
-}
-
-type invalidFilePath struct {
-	filePath string
-}
-
-func (err invalidFilePath) Error() string {
-	return fmt.Sprintf("Invalid path: %s", err.filePath)
 }
 
 func checkPathIsValid(path string) bool {
@@ -56,19 +33,19 @@ func checkPathIsValid(path string) bool {
 // SaveFile is method saving file
 func (filer *Filer) SaveFile(data []byte, name string, path string) (file domain.File, err error) {
 	if strings.Contains(name, "/") || name == "" {
-		err = invalidFileName{fileName: name}
+		err = errors.InvalidFileName{FileName: name}
 
 		return
 	}
 
 	if len(data) == 0 {
-		err = emptyData{}
+		err = errors.EmptyData{}
 
 		return
 	}
 
 	if !checkPathIsValid(path) {
-		err = invalidFilePath{filePath: path}
+		err = errors.InvalidFilePath{FilePath: path}
 
 		return
 	}
@@ -88,13 +65,13 @@ func (filer *Filer) SaveFile(data []byte, name string, path string) (file domain
 // DeleteFile is method deleting file
 func (filer *Filer) DeleteFile(name string, path string) (file domain.File, err error) {
 	if strings.Contains(name, "/") || name == "" {
-		err = invalidFileName{fileName: name}
+		err = errors.InvalidFileName{FileName: name}
 
 		return
 	}
 
 	if !checkPathIsValid(path) {
-		err = invalidFilePath{filePath: path}
+		err = errors.InvalidFilePath{FilePath: path}
 
 		return
 	}
@@ -112,13 +89,13 @@ func (filer *Filer) DeleteFile(name string, path string) (file domain.File, err 
 // GetFile is method getting file
 func (filer *Filer) GetFile(name string, path string) (file domain.File, err error) {
 	if strings.Contains(name, "/") || name == "" {
-		err = invalidFileName{fileName: name}
+		err = errors.InvalidFileName{FileName: name}
 
 		return
 	}
 
 	if !checkPathIsValid(path) {
-		err = invalidFilePath{filePath: path}
+		err = errors.InvalidFilePath{FilePath: path}
 
 		return
 	}
@@ -133,7 +110,7 @@ func (filer *Filer) GetFile(name string, path string) (file domain.File, err err
 // GetFiles is method getting files by path
 func (filer *Filer) GetFiles(path string) (files []domain.File, err error) {
 	if !checkPathIsValid(path) {
-		err = invalidFilePath{filePath: path}
+		err = errors.InvalidFilePath{FilePath: path}
 
 		return
 	}
