@@ -10,9 +10,15 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
 	"gorm.io/gorm"
+
+	"net/http"
+	"time"
 )
 
-const logFormat = "Endpoint: %s Status: %d Description: %s\n"
+const (
+	logFormat       = "Endpoint: %s Status: %d Description: %s\n"
+	timeoutDuration = 15
+)
 
 var (
 	controller usecase.Filer
@@ -39,5 +45,12 @@ func Serve(dbfile string, storageDir string) error {
 
 	router.HandleFunc("/files", getFilesHandler).Queries("path", "{path}").Methods("GET")
 
-	return nil
+	server := &http.Server{
+		Handler:      router,
+		Addr:         "127.0.0.1:8000",
+		WriteTimeout: timeoutDuration * time.Second,
+		ReadTimeout:  timeoutDuration * time.Second,
+	}
+
+	return server.ListenAndServe()
 }
