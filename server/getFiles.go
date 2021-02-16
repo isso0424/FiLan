@@ -34,8 +34,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	encoded, err := json.Marshal(filesModel)
 	if err != nil {
-		errorMessage := "error occur in json pasing"
-		handlerRequestError(w, endpoint, method, http.StatusInternalServerError, errorMessage)
+		jsonParseError(w, endpoint, method)
 
 		return
 	}
