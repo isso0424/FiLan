@@ -9,11 +9,18 @@ import (
 
 // Save is method saving file to local storage
 func (repo Repository) Save(file domain.File) error {
-	filePath := path.Join(repo.StorageDir, file.Path, file.Name)
-	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+	fileDir := path.Join(repo.StorageDir, file.Path)
+	err := os.MkdirAll(fileDir, 0777)
 	if err != nil {
 		return err
 	}
+
+	filePath := path.Join(fileDir, file.Name)
+	f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0777)
+	if err != nil {
+		return err
+	}
+
 	_, err = f.Write(file.Data)
 
 	return err

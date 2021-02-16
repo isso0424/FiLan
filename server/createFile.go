@@ -1,14 +1,15 @@
 package server
 
 import (
+	"io/ioutil"
 	"net/http"
-	"strconv"
 )
+
+const bufferSize = 1024 * 1024
 
 func createFileHandler(w http.ResponseWriter, r *http.Request) {
 	type Query struct {
 		Path string `schema:"path,required"`
-		Size string `schema:"size,required"`
 		Name string `schema:"name,required"`
 	}
 
@@ -23,16 +24,7 @@ func createFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	bufferSize, err := strconv.Atoi(query.Size)
-	if err != nil {
-		errorMessage := "Query parameter size must be integer"
-		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
-
-		return
-	}
-
-	buffer := make([]byte, bufferSize)
-	_, err = r.Body.Read(buffer)
+	buffer, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		errorMessage := "Received buffer larger than size"
 		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)

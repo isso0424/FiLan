@@ -3,13 +3,11 @@ package server
 
 import (
 	"FiLan/controller/filer"
-	"FiLan/repository/filesystem"
-	"FiLan/repository/sqlite/filerepository"
+	"FiLan/repository"
 	"FiLan/usecase"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"
-	"gorm.io/gorm"
 
 	"net/http"
 	"time"
@@ -26,13 +24,8 @@ var (
 )
 
 // Serve is function lanching server
-func Serve(dbfile string, storageDir string) error {
-	accessRepository := filesystem.New(storageDir)
-	repo, err := filerepository.New(dbfile, &gorm.Config{})
-	if err != nil {
-		return err
-	}
-	controller = filer.New(repo, accessRepository)
+func Serve(fsRepository *repository.FileAccessRepository, dbRepository *repository.FileRepository) error {
+	controller = filer.New(*dbRepository, *fsRepository)
 
 	router := mux.NewRouter()
 
