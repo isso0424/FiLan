@@ -1,8 +1,6 @@
 package server
 
 import (
-	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -18,7 +16,7 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := decoder.Decode(&query, r.URL.Query())
 	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "name or path")
+		handleInvalidQuery(w, endpoint, method, "name or path")
 
 		return
 	}
@@ -26,21 +24,10 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := controller.GetFile(query.Name, query.Path)
 	if err != nil {
 		errorMessage := "Not found"
-		handlerRequestError(w, endpoint, method, http.StatusNotFound, errorMessage)
+		handleRequestError(w, endpoint, method, http.StatusNotFound, errorMessage)
 
 		return
 	}
 
-	model := convertDomainToModel(file)
-	encoded, err := json.Marshal(model)
-	if err != nil {
-		jsonParseError(w, endpoint, method)
-
-		return
-	}
-
-	_, err = w.Write(encoded)
-	if err != nil {
-		log.Println(err)
-	}
+	domainWritebackToClient(file, w, endpoint, method)
 }

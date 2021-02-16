@@ -1,7 +1,7 @@
 // Package usecase provides definition for usecase
 package usecase
 
-import "FiLan/domain"
+import "FiLan/model/domain"
 
 // Filer is interface for file managing
 type Filer interface {

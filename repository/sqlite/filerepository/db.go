@@ -1,7 +1,7 @@
 package filerepository
 
 import (
-	"FiLan/domain"
+	"FiLan/model/domain"
 	"strings"
 )
 

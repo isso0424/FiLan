@@ -2,8 +2,8 @@ package filer_test
 
 import (
 	"FiLan/controller/filer"
-	"FiLan/repository/mock"
-	"FiLan/repository/mock/accessrepository"
+	"FiLan/repository/mock/db"
+	"FiLan/repository/mock/filesystem"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -23,8 +23,8 @@ func (err testError) Error() string {
 }
 
 func TestSavingFileSuccess(t *testing.T) {
-	accessRepository := accessrepository.New()
-	mockRepository := mock.New()
+	accessRepository := filesystem.New()
+	mockRepository := db.New()
 	controller := filer.New(mockRepository, &accessRepository)
 	data := []byte("example")
 
@@ -39,8 +39,8 @@ func TestSavingFileSuccess(t *testing.T) {
 }
 
 func TestSavingFileFail(t *testing.T) {
-	accessRepository := accessrepository.New()
-	mockRepository := mock.New()
+	accessRepository := filesystem.New()
+	mockRepository := db.New()
 	controller := filer.New(mockRepository, &accessRepository)
 	data := []byte("example")
 
@@ -58,8 +58,8 @@ func TestSavingFileFail(t *testing.T) {
 }
 
 func TestDeletingSuccess(t *testing.T) {
-	accessRepository := accessrepository.New()
-	mockRepository := mock.New()
+	accessRepository := filesystem.New()
+	mockRepository := db.New()
 	controller := filer.New(mockRepository, &accessRepository)
 	data := []byte("example")
 
@@ -75,8 +75,8 @@ func TestDeletingSuccess(t *testing.T) {
 }
 
 func TestDeletingFail(t *testing.T) {
-	accessRepository := accessrepository.New()
-	mockRepository := mock.New()
+	accessRepository := filesystem.New()
+	mockRepository := db.New()
 	controller := filer.New(mockRepository, &accessRepository)
 	invalidName := "invalid"
 	invalidPath := "example/invalid"
@@ -87,8 +87,8 @@ func TestDeletingFail(t *testing.T) {
 }
 
 func TestGettingSuccess(t *testing.T) {
-	accessRepository := accessrepository.New()
-	mockRepository := mock.New()
+	accessRepository := filesystem.New()
+	mockRepository := db.New()
 	controller := filer.New(mockRepository, &accessRepository)
 	data := []byte("example")
 
@@ -108,8 +108,8 @@ func TestGettingSuccess(t *testing.T) {
 }
 
 func TestGettingFail(t *testing.T) {
-	accessRepository := accessrepository.New()
-	mockRepository := mock.New()
+	accessRepository := filesystem.New()
+	mockRepository := db.New()
 	controller := filer.New(mockRepository, &accessRepository)
 	invalidName := "invalid"
 	invalidPath := "invalid/path"
@@ -121,8 +121,8 @@ func TestGettingFail(t *testing.T) {
 }
 
 func TestGettingFilesSuccess(t *testing.T) {
-	accessRepository := accessrepository.New()
-	mockRepository := mock.New()
+	accessRepository := filesystem.New()
+	mockRepository := db.New()
 	controller := filer.New(mockRepository, &accessRepository)
 	data := []byte("example")
 

@@ -1,7 +1,7 @@
-package accessrepository
+package filesystem
 
 import (
-	"FiLan/domain"
+	"FiLan/model/domain"
 	"fmt"
 	"strings"
 )
