@@ -33,9 +33,9 @@ func convertDomainToModel(file domain.File) fileModel {
 
 // nolint:unparam
 func handlerRequestError(w http.ResponseWriter, endpoint string, method string, statusCode int, errorMessage string) {
-	log.Printf(logFormat, endpoint, http.StatusBadRequest, errorMessage)
+	log.Printf(logFormat, endpoint, statusCode, errorMessage)
 
-	w.WriteHeader(http.StatusBadRequest)
+	w.WriteHeader(statusCode)
 	_, err := w.Write([]byte(errorMessage))
 	if err != nil {
 		log.Println(err)
