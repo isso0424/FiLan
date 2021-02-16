@@ -14,7 +14,7 @@ func deleteFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := decoder.Decode(&query, r.URL.Query())
 	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "name or path")
+		handleInvalidQuery(w, endpoint, method, "name or path")
 
 		return
 	}
@@ -22,7 +22,7 @@ func deleteFileHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := controller.DeleteFile(query.Name, query.Path)
 	if err != nil {
 		errorMessage := err.Error()
-		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
+		handleRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
 
 		return
 	}

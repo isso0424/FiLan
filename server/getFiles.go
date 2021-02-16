@@ -17,7 +17,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := decoder.Decode(&query, r.URL.Query())
 	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "path")
+		handleInvalidQuery(w, endpoint, method, "path")
 
 		return
 	}
@@ -29,8 +29,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	filesModel := []fileModel{}
-
+	var filesModel []fileModel
 	for _, file := range files {
 		fileModel := convertDomainToModel(file)
 		filesModel = append(filesModel, fileModel)
@@ -38,7 +37,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	encoded, err := json.Marshal(filesModel)
 	if err != nil {
-		jsonParseError(w, endpoint, method)
+		handleJsonParseError(w, endpoint, method)
 
 		return
 	}

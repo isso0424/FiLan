@@ -17,7 +17,7 @@ func createFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := decoder.Decode(&query, r.URL.Query())
 	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "name, size, or path")
+		handleInvalidQuery(w, endpoint, method, "name, size, or path")
 
 		return
 	}
@@ -25,7 +25,7 @@ func createFileHandler(w http.ResponseWriter, r *http.Request) {
 	buffer, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		errorMessage := "Received buffer larger than size"
-		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
+		handleRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
 
 		return
 	}
@@ -33,7 +33,7 @@ func createFileHandler(w http.ResponseWriter, r *http.Request) {
 	file, err := controller.SaveFile(buffer, query.Name, query.Path)
 	if err != nil {
 		errorMessage := err.Error()
-		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
+		handleRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
 
 		return
 	}
