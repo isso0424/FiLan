@@ -30,7 +30,7 @@ func fsSetup(storageDir string) error {
 			return nil
 		}
 
-		return invalidPath{ description: "Dir is already exist as file" }
+		return invalidPath{description: "Dir is already exist as file"}
 	}
 
 	return os.MkdirAll(storagePath, 0777)

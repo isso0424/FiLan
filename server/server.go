@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	logFormat       = "Endpoint: %s Status: %d Description: %s\n"
+	logFormat       = "Method: %s Endpoint: %s Status: %d Description: %s\n"
 	timeoutDuration = 15
 )
 

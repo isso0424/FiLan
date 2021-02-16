@@ -30,9 +30,8 @@ func convertDomainToModel(file domain.File) fileModel {
 	}
 }
 
-// nolint:unparam
 func handlerRequestError(w http.ResponseWriter, endpoint string, method string, statusCode int, errorMessage string) {
-	log.Printf(logFormat, endpoint, statusCode, errorMessage)
+	log.Printf(logFormat, method, endpoint, statusCode, errorMessage)
 
 	w.WriteHeader(statusCode)
 	_, err := w.Write([]byte(errorMessage))
@@ -42,7 +41,7 @@ func handlerRequestError(w http.ResponseWriter, endpoint string, method string, 
 }
 
 func handleInternalServerError(w http.ResponseWriter, endpoint string, method string, occurredErr error) {
-	log.Printf(logFormat, endpoint, http.StatusInternalServerError, occurredErr)
+	log.Printf(logFormat, method, endpoint, http.StatusInternalServerError, occurredErr)
 
 	w.WriteHeader(http.StatusInternalServerError)
 	_, err := w.Write([]byte("Internal server error"))

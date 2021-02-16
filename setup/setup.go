@@ -11,26 +11,29 @@ import (
 	"gorm.io/gorm"
 )
 
-type setuppedObj struct {
-	DbRepository repository.FileRepository
+// SetuppedObj is object for setupped values
+type SetuppedObj struct {
+	DBRepository repository.FileRepository
 	FsRepository repository.FileAccessRepository
-	Err error
+	Err          error
 }
 
-func Setup(mode string, storageDir string, dbFile string) setuppedObj {
+// Setup is setup function for serve
+func Setup(mode string, storageDir string, dbFile string) SetuppedObj {
 	if mode == "test" {
 		mockDB := mock.New()
 		mockFS := accessrepository.New()
-		return setuppedObj{
-			DbRepository: mockDB,
+
+		return SetuppedObj{
+			DBRepository: mockDB,
 			FsRepository: &mockFS,
-			Err: nil,
+			Err:          nil,
 		}
 	}
 
 	err := fsSetup(storageDir)
 	if err != nil {
-		return setuppedObj{
+		return SetuppedObj{
 			Err: err,
 		}
 	}
@@ -38,14 +41,14 @@ func Setup(mode string, storageDir string, dbFile string) setuppedObj {
 	fsRepository := filesystem.New(storageDir)
 	dbRepository, err := filerepository.New(dbFile, &gorm.Config{})
 	if err != nil {
-		return setuppedObj{
+		return SetuppedObj{
 			Err: err,
 		}
 	}
 
-	return setuppedObj{
-		DbRepository: dbRepository,
+	return SetuppedObj{
+		DBRepository: dbRepository,
 		FsRepository: fsRepository,
-		Err: nil,
+		Err:          nil,
 	}
 }

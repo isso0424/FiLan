@@ -20,5 +20,6 @@ func New(storageDir string) Repository {
 	}
 
 	storagePath := path.Join(cacheDir, storageDir)
+
 	return Repository{StorageDir: storagePath}
 }

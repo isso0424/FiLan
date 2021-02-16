@@ -16,7 +16,7 @@ func main() {
 		panic(obj.Err)
 	}
 
-	err := server.Serve(&obj.FsRepository, &obj.DbRepository)
+	err := server.Serve(&obj.FsRepository, &obj.DBRepository)
 	if err != nil {
 		panic(err)
 	}

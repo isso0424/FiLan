@@ -5,8 +5,6 @@ import (
 	"net/http"
 )
 
-const bufferSize = 1024 * 1024
-
 func createFileHandler(w http.ResponseWriter, r *http.Request) {
 	type Query struct {
 		Path string `schema:"path,required"`
