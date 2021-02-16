@@ -37,7 +37,7 @@ func Serve(dbfile string, storageDir string) error {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/file", getFileHandler).Methods("GET")
-	router.  HandleFunc("/file", createFileHandler).Methods("POST")
+	router.HandleFunc("/file", createFileHandler).Methods("POST")
 	router.HandleFunc("/file", deleteFileHandler).Methods("DELETE")
 
 	router.HandleFunc("/files", getFilesHandler).Methods("GET")
