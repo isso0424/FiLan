@@ -24,8 +24,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	files, err := controller.GetFiles(query.Path)
 	if err != nil {
-		errorMessage := "Internal server error"
-		handlerRequestError(w, endpoint, method, http.StatusInternalServerError, errorMessage)
+		handleInternalServerError(w, endpoint, method, err)
 
 		return
 	}

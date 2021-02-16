@@ -25,18 +25,26 @@ func convertDomainToModel(file domain.File) fileModel {
 	return fileModel{
 		Name:      file.Name,
 		Path:      file.Path,
-		Encoded:   base64.StdEncoding.EncodeToString(file.Data),
 		CreatedAt: file.CreatedAt,
 		UpdatedAt: file.UpdatedAt,
 	}
 }
 
-// nolint:unparam
 func handlerRequestError(w http.ResponseWriter, endpoint string, method string, statusCode int, errorMessage string) {
-	log.Printf(logFormat, endpoint, statusCode, errorMessage)
+	log.Printf(logFormat, method, endpoint, statusCode, errorMessage)
 
 	w.WriteHeader(statusCode)
 	_, err := w.Write([]byte(errorMessage))
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func handleInternalServerError(w http.ResponseWriter, endpoint string, method string, occurredErr error) {
+	log.Printf(logFormat, method, endpoint, http.StatusInternalServerError, occurredErr)
+
+	w.WriteHeader(http.StatusInternalServerError)
+	_, err := w.Write([]byte("Internal server error"))
 	if err != nil {
 		log.Println(err)
 	}
