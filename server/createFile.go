@@ -6,33 +6,24 @@ import (
 )
 
 func createFileHandler(w http.ResponseWriter, r *http.Request) {
+	type Query struct {
+		Path string
+		Size string
+		Name string
+	}
+
 	const endpoint = "/file"
 	const method = "POST"
-	var name string
-	var path string
-	var size string
-	err := decoder.Decode(name, r.URL.Query())
+	query := Query{}
+
+	err := decoder.Decode(&query, r.URL.Query())
 	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "name")
+		queryNotEnoughError(w, endpoint, method, "name, size, or path")
 
 		return
 	}
 
-	err = decoder.Decode(path, r.URL.Query())
-	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "path")
-
-		return
-	}
-
-	err = decoder.Decode(size, r.URL.Query())
-	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "size")
-
-		return
-	}
-
-	bufferSize, err := strconv.Atoi(size)
+	bufferSize, err := strconv.Atoi(query.Size)
 	if err != nil {
 		errorMessage := "Query parameter size must be integer"
 		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
@@ -49,7 +40,7 @@ func createFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	file, err := controller.SaveFile(buffer, name, path)
+	file, err := controller.SaveFile(buffer, query.Name, query.Path)
 	if err != nil {
 		errorMessage := err.Error()
 		handlerRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)

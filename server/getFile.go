@@ -7,25 +7,23 @@ import (
 )
 
 func getFileHandler(w http.ResponseWriter, r *http.Request) {
+	type Query struct {
+		Name string
+		Path string
+	}
+
 	const endpoint = "/file"
 	const method = "GET"
-	var name string
-	var path string
-	err := decoder.Decode(name, r.URL.Query())
+	query := Query{}
+
+	err := decoder.Decode(&query, r.URL.Query())
 	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "name")
+		queryNotEnoughError(w, endpoint, method, "name or path")
 
 		return
 	}
 
-	err = decoder.Decode(path, r.URL.Query())
-	if err != nil {
-		queryNotEnoughError(w, endpoint, method, "path")
-
-		return
-	}
-
-	file, err := controller.GetFile(name, path)
+	file, err := controller.GetFile(query.Name, query.Path)
 	if err != nil {
 		errorMessage := "Not found"
 		handlerRequestError(w, endpoint, method, http.StatusNotFound, errorMessage)
