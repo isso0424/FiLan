@@ -4,8 +4,8 @@ package setup
 import (
 	"FiLan/repository"
 	"FiLan/repository/filesystem"
-	"FiLan/repository/mock"
-	"FiLan/repository/mock/accessrepository"
+	"FiLan/repository/mock/db"
+	mockfs "FiLan/repository/mock/filesystem"
 	"FiLan/repository/sqlite/filerepository"
 
 	"gorm.io/gorm"
@@ -21,8 +21,8 @@ type SetuppedObj struct {
 // Setup is setup function for serve
 func Setup(mode string, storageDir string, dbFile string) SetuppedObj {
 	if mode == "test" {
-		mockDB := mock.New()
-		mockFS := accessrepository.New()
+		mockDB := db.New()
+		mockFS := mockfs.New()
 
 		return SetuppedObj{
 			DBRepository: mockDB,

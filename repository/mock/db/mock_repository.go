@@ -1,8 +1,8 @@
 // Package mock provides mock struct for FileRepository
-package mock
+package db
 
 import (
-	"FiLan/domain"
+	"FiLan/model/domain"
 	"strings"
 )
 
@@ -83,7 +83,7 @@ func (repo *FileRepository) GetByFullPath(fullPath string) (domain.File, error) 
 
 // GetByDir is file getting function by dir
 func (repo *FileRepository) GetByDir(path string) ([]domain.File, error) {
-	result := []domain.File{}
+	var result []domain.File
 	for _, file := range repo.Files {
 		if file.Path == path {
 			result = append(result, file)

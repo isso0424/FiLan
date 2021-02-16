@@ -1,8 +1,8 @@
-// Package accessrepository provides mock Repository for FileAccessRepository
-package accessrepository
+// Package filesystem provides mock Repository for FileAccessRepository
+package filesystem
 
 import (
-	"FiLan/domain"
+	"FiLan/model/domain"
 	"fmt"
 )
 

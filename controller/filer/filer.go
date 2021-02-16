@@ -2,8 +2,8 @@
 package filer
 
 import (
-	"FiLan/domain"
-	"FiLan/errors"
+	"FiLan/model/domain"
+	"FiLan/model/errors"
 	"FiLan/repository"
 	"strings"
 	"time"

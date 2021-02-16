@@ -3,8 +3,8 @@ package server
 
 import (
 	"FiLan/controller/filer"
+	"FiLan/model/usecase"
 	"FiLan/repository"
-	"FiLan/usecase"
 
 	"github.com/gorilla/mux"
 	"github.com/gorilla/schema"

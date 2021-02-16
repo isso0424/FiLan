@@ -1,14 +1,14 @@
-package accessrepository_test
+package filesystem_test
 
 import (
-	"FiLan/domain"
-	"FiLan/repository/mock/accessrepository"
+	"FiLan/model/domain"
+	"FiLan/repository/mock/filesystem"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func createTestingFiles(repo *accessrepository.MockRepository) (err error) {
+func createTestingFiles(repo *filesystem.MockRepository) (err error) {
 	file := domain.File{
 		Name: "hoge",
 		Path: "foo/bar",
@@ -33,7 +33,7 @@ func createTestingFiles(repo *accessrepository.MockRepository) (err error) {
 }
 
 func TestFileSavingSuccess(t *testing.T) {
-	repo := accessrepository.New()
+	repo := filesystem.New()
 	err := createTestingFiles(&repo)
 	if err != nil {
 		t.Fatal(err)
@@ -63,7 +63,7 @@ func TestFileSavingSuccess(t *testing.T) {
 }
 
 func TestFileDeletingSuccess(t *testing.T) {
-	repo := accessrepository.New()
+	repo := filesystem.New()
 	err := createTestingFiles(&repo)
 	if err != nil {
 		t.Fatal(err)
@@ -85,7 +85,7 @@ func TestFileDeletingSuccess(t *testing.T) {
 }
 
 func TestFileGettingByFullPathSuccess(t *testing.T) {
-	repo := accessrepository.New()
+	repo := filesystem.New()
 	err := createTestingFiles(&repo)
 	if err != nil {
 		t.Fatal(err)
@@ -117,7 +117,7 @@ func TestFileGettingByFullPathSuccess(t *testing.T) {
 }
 
 func TestFileGettingByDirSuccess(t *testing.T) {
-	repo := accessrepository.New()
+	repo := filesystem.New()
 	err := createTestingFiles(&repo)
 	if err != nil {
 		t.Fatal(err)
@@ -144,7 +144,7 @@ func TestFileGettingByDirSuccess(t *testing.T) {
 }
 
 func TestFileDeletingFail(t *testing.T) {
-	repo := accessrepository.New()
+	repo := filesystem.New()
 	err := createTestingFiles(&repo)
 	if err != nil {
 		t.Fatal(err)
@@ -157,7 +157,7 @@ func TestFileDeletingFail(t *testing.T) {
 }
 
 func TestFileGettingByFullPathFail(t *testing.T) {
-	repo := accessrepository.New()
+	repo := filesystem.New()
 	err := createTestingFiles(&repo)
 	if err != nil {
 		t.Fatal(err)
@@ -170,7 +170,7 @@ func TestFileGettingByFullPathFail(t *testing.T) {
 }
 
 func TestFileGettingByDirFail(t *testing.T) {
-	repo := accessrepository.New()
+	repo := filesystem.New()
 	err := createTestingFiles(&repo)
 	if err != nil {
 		t.Fatal(err)

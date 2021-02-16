@@ -1,9 +1,9 @@
-package mock_test
+package db_test
 
 import (
-	"FiLan/domain"
+	"FiLan/model/domain"
 	"FiLan/repository"
-	"FiLan/repository/mock"
+	"FiLan/repository/mock/db"
 	"testing"
 	"time"
 
@@ -11,13 +11,13 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	repo := mock.New()
+	repo := db.New()
 
 	assert.Equal(t, len(repo.Files), 0)
 }
 
 func TestSave(t *testing.T) {
-	repo := mock.New()
+	repo := db.New()
 
 	file := domain.File{
 		Name:      "hoge",
@@ -61,7 +61,7 @@ func TestSave(t *testing.T) {
 }
 
 func TestSearchByFullPath(t *testing.T) {
-	repo := mock.New()
+	repo := db.New()
 
 	file := domain.File{
 		Name:      "hoge",
@@ -93,7 +93,7 @@ func TestSearchByFullPath(t *testing.T) {
 }
 
 func TestSearchByDir(t *testing.T) {
-	repo := mock.New()
+	repo := db.New()
 
 	file := domain.File{
 		Name:      "hoge",
@@ -153,7 +153,7 @@ func TestSearchByDir(t *testing.T) {
 }
 
 func TestDelete(t *testing.T) {
-	repo := mock.New()
+	repo := db.New()
 
 	file := domain.File{
 		Name:      "hoge",
@@ -184,6 +184,6 @@ func assertion(repo repository.FileRepository) {
 }
 
 func TestMockImplementing(t *testing.T) {
-	repo := mock.New()
+	repo := db.New()
 	assertion(repo)
 }

@@ -1,7 +1,7 @@
 package server
 
 import (
-	"FiLan/domain"
+	"FiLan/model/domain"
 	"encoding/base64"
 	"encoding/json"
 	"log"

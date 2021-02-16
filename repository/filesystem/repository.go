@@ -1,7 +1,7 @@
 package filesystem
 
 import (
-	"FiLan/domain"
+	"FiLan/model/domain"
 	"io/ioutil"
 	"os"
 	"path"

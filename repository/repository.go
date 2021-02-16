@@ -1,7 +1,7 @@
 // Package repository provides definition for repository
 package repository
 
-import "FiLan/domain"
+import "FiLan/model/domain"
 
 // FileRepository is file managing repository
 type FileRepository interface {
