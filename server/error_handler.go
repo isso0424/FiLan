@@ -16,7 +16,7 @@ func handleInvalidQuery(
 	handleRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
 }
 
-func handleJsonParseError(
+func handleJSONParseError(
 	w http.ResponseWriter,
 	endpoint string,
 	method string,

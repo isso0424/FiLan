@@ -1,4 +1,4 @@
-// Package mock provides mock struct for FileRepository
+// Package db provides mock struct for FileRepository
 package db
 
 import (

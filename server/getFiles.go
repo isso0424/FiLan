@@ -29,7 +29,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var filesModel []fileModel
+	filesModel := []fileModel{}
 	for _, file := range files {
 		fileModel := convertDomainToModel(file)
 		filesModel = append(filesModel, fileModel)
@@ -37,7 +37,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	encoded, err := json.Marshal(filesModel)
 	if err != nil {
-		handleJsonParseError(w, endpoint, method)
+		handleJSONParseError(w, endpoint, method)
 
 		return
 	}
