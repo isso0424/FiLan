@@ -7,17 +7,22 @@ import (
 )
 
 func getFilesHandler(w http.ResponseWriter, r *http.Request) {
+	type Query struct {
+		Path string `schema:"path,required"`
+	}
+
 	const endpoint = "/files"
 	const method = "GET"
-	var path string
-	err := decoder.Decode(path, r.URL.Query())
+	query := Query{}
+
+	err := decoder.Decode(&query, r.URL.Query())
 	if err != nil {
 		queryNotEnoughError(w, endpoint, method, "path")
 
 		return
 	}
 
-	files, err := controller.GetFiles(path)
+	files, err := controller.GetFiles(query.Path)
 	if err != nil {
 		errorMessage := "Internal server error"
 		handlerRequestError(w, endpoint, method, http.StatusInternalServerError, errorMessage)
