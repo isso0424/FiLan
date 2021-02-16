@@ -8,8 +8,8 @@ import (
 
 func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	type Query struct {
-		Name string
-		Path string
+		Name string `schema:"name,required"`
+		Path string `schema:"path,required"`
 	}
 
 	const endpoint = "/file"
