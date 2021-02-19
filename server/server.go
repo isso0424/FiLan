@@ -13,10 +13,7 @@ import (
 	"time"
 )
 
-const (
-	logFormat       = "Method: %s Endpoint: %s Status: %d Description: %s\n"
-	timeoutDuration = 15
-)
+const timeoutDuration = 15
 
 var (
 	controller usecase.Filer

@@ -30,4 +30,5 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	domainWritebackToClient(file, w, endpoint, method)
+	loggingSuccess(method, endpoint, http.StatusOK)
 }
