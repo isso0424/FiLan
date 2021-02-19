@@ -1,6 +1,7 @@
 package server
 
 import (
+	"log"
 	"net/http"
 )
 
@@ -29,6 +30,14 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	domainWritebackToClient(file, w, endpoint, method)
+	log.Println(len(file.Data))
+
+	err = fileWritebackToClient(file.Data, w)
+	if err != nil {
+		handleInternalServerError(w, endpoint, method, err)
+
+		return
+	}
+
 	loggingSuccess(method, endpoint, http.StatusOK)
 }

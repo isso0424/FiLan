@@ -21,12 +21,16 @@ func deleteFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	file, err := controller.DeleteFile(query.Name, query.Path)
 	if err != nil {
-		errorMessage := err.Error()
-		handleRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
+		handleInternalServerError(w, endpoint, method, err)
 
 		return
 	}
 
-	domainWritebackToClient(file, w, endpoint, method)
+	err = domainWritebackToClient(file, w)
+	if err != nil {
+		handleInternalServerError(w, endpoint, method, err)
+
+		return
+	}
 	loggingSuccess(method, endpoint, http.StatusOK)
 }
