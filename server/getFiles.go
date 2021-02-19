@@ -46,4 +46,6 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+
+	loggingSuccess(method, endpoint, http.StatusOK)
 }
