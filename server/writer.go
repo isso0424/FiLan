@@ -16,17 +16,20 @@ func writeError(w http.ResponseWriter, statusCode int, errorMessage string) {
 	}
 }
 
-func domainWritebackToClient(file domain.File, w http.ResponseWriter, endpoint string, method string) {
+func domainWritebackToClient(file domain.File, w http.ResponseWriter, endpoint string, method string) error {
 	model := convertDomainToModel(file)
 	encoded, err := json.Marshal(model)
 	if err != nil {
-		handleInternalServerError(w, endpoint, method, err)
-
-		return
+		return err
 	}
 
 	_, err = w.Write(encoded)
-	if err != nil {
-		log.Println(err)
-	}
+
+	return err
+}
+
+func fileWritebackToClient(file []byte, w http.ResponseWriter, endpoint string, method string) error {
+	_, err := w.Write(file)
+
+	return err
 }

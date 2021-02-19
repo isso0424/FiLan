@@ -36,15 +36,7 @@ func (repo Repository) Delete(fullPath string) error {
 // GetByFullPath is method getting file from local storage
 func (repo Repository) GetByFullPath(fullpath string) (data []byte, err error) {
 	fullPath := path.Join(repo.StorageDir, fullpath)
-	f, err := os.Open(fullPath)
-	if err != nil {
-		return
-	}
-
-	_, err = f.Read(data)
-	if err != nil {
-		return
-	}
+	data, err = ioutil.ReadFile(fullPath)
 
 	return
 }
