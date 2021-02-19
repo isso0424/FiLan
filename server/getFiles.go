@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -44,7 +43,7 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	_, err = w.Write(encoded)
 	if err != nil {
-		log.Println(err)
+		handleInternalServerError(w, endpoint, method, err)
 
 		return
 	}

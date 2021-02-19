@@ -32,8 +32,8 @@ func getFileHandler(w http.ResponseWriter, r *http.Request) {
 
 	log.Println(len(file.Data))
 
-	err = fileWritebackToClient(file.Data, w, endpoint, method)
-	if (err != nil) {
+	err = fileWritebackToClient(file.Data, w)
+	if err != nil {
 		handleInternalServerError(w, endpoint, method, err)
 
 		return

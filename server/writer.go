@@ -3,6 +3,7 @@ package server
 import (
 	"FiLan/model/domain"
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 )
@@ -16,7 +17,7 @@ func writeError(w http.ResponseWriter, statusCode int, errorMessage string) {
 	}
 }
 
-func domainWritebackToClient(file domain.File, w http.ResponseWriter, endpoint string, method string) error {
+func domainWritebackToClient(file domain.File, w io.Writer) error {
 	model := convertDomainToModel(file)
 	encoded, err := json.Marshal(model)
 	if err != nil {
@@ -28,7 +29,7 @@ func domainWritebackToClient(file domain.File, w http.ResponseWriter, endpoint s
 	return err
 }
 
-func fileWritebackToClient(file []byte, w http.ResponseWriter, endpoint string, method string) error {
+func fileWritebackToClient(file []byte, w io.Writer) error {
 	_, err := w.Write(file)
 
 	return err
