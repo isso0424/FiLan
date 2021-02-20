@@ -2,6 +2,7 @@ package server
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -15,9 +16,9 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 	query := Query{}
 
 	err := decoder.Decode(&query, r.URL.Query())
-	queries := []loggingQuery{ { key: "path", value: query.Path } }
+	queries := []loggingQuery{{key: "path", value: query.Path}}
 	if err != nil {
-		handleRequestError(w, endpoint, method, http.StatusBadRequest, queries, "path")
+		handleRequestError(w, endpoint, method, http.StatusBadRequest, queries, fmt.Sprintf(notEnoughQuery, "path"))
 
 		return
 	}

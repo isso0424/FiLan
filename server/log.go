@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	logFormat = "Method: %s Endpoint: %s Status: %d Params: %s"
+	logFormat        = "Method: %s Endpoint: %s Status: %d Params: %s"
 	successLogFormat = logFormat + "\n"
-	failedLogFormat = logFormat + " Error: %s\n"
+	failedLogFormat  = logFormat + " Error: %s\n"
 )
 
 type loggingQuery struct {

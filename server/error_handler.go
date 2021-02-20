@@ -6,18 +6,28 @@ import (
 	"net/http"
 )
 
-const (
-	notEnoughQuery = "Required query parameters: %s"
-	failedParsingJSON = "Error occur in json parsing"
-)
+const notEnoughQuery = "Required query parameters: %s"
 
-func handleRequestError(w http.ResponseWriter, endpoint string, method string, statusCode int, params []loggingQuery, errorMessage string) {
+func handleRequestError(
+	w http.ResponseWriter,
+	endpoint string,
+	method string,
+	statusCode int,
+	params []loggingQuery,
+	errorMessage string,
+) {
 	loggingFailed(method, endpoint, http.StatusInternalServerError, params, errors.New(errorMessage))
 
 	writeError(w, statusCode, errorMessage)
 }
 
-func handleInternalServerError(w http.ResponseWriter, endpoint string, method string, params []loggingQuery, occurredErr error) {
+func handleInternalServerError(
+	w http.ResponseWriter,
+	endpoint string,
+	method string,
+	params []loggingQuery,
+	occurredErr error,
+) {
 	log.Printf(logFormat, method, endpoint, http.StatusInternalServerError, occurredErr)
 	loggingFailed(method, endpoint, http.StatusInternalServerError, params, occurredErr)
 

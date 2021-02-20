@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -16,9 +17,9 @@ func createFileHandler(w http.ResponseWriter, r *http.Request) {
 	query := Query{}
 
 	err := decoder.Decode(&query, r.URL.Query())
-	queries := []loggingQuery{ { key: "path", value: query.Path }, { key: "name", value: query.Name } }
+	queries := []loggingQuery{{key: "path", value: query.Path}, {key: "name", value: query.Name}}
 	if err != nil {
-		handleRequestError(w, endpoint, method, http.StatusBadRequest, queries, "name or path")
+		handleRequestError(w, endpoint, method, http.StatusBadRequest, queries, fmt.Sprintf(notEnoughQuery, "name and path"))
 
 		return
 	}
