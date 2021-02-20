@@ -13,24 +13,25 @@ func deleteFileHandler(w http.ResponseWriter, r *http.Request) {
 	query := Query{}
 
 	err := decoder.Decode(&query, r.URL.Query())
+	queries := []loggingQuery{ { key: "path", value: query.Path }, { key: "name", value: query.Name } }
 	if err != nil {
-		handleInvalidQuery(w, endpoint, method, "name or path")
+		handleRequestError(w, endpoint, method, http.StatusBadRequest, queries, "name or path")
 
 		return
 	}
 
 	file, err := controller.DeleteFile(query.Name, query.Path)
 	if err != nil {
-		handleInternalServerError(w, endpoint, method, err)
+		handleInternalServerError(w, endpoint, method, queries, err)
 
 		return
 	}
 
 	err = domainWritebackToClient(file, w)
 	if err != nil {
-		handleInternalServerError(w, endpoint, method, err)
+		handleInternalServerError(w, endpoint, method, queries, err)
 
 		return
 	}
-	loggingSuccess(method, endpoint, http.StatusOK)
+	loggingSuccess(method, endpoint, http.StatusOK, queries)
 }

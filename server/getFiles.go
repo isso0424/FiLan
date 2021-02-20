@@ -15,15 +15,16 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 	query := Query{}
 
 	err := decoder.Decode(&query, r.URL.Query())
+	queries := []loggingQuery{ { key: "path", value: query.Path } }
 	if err != nil {
-		handleInvalidQuery(w, endpoint, method, "path")
+		handleRequestError(w, endpoint, method, http.StatusBadRequest, queries, "path")
 
 		return
 	}
 
 	files, err := controller.GetFiles(query.Path)
 	if err != nil {
-		handleInternalServerError(w, endpoint, method, err)
+		handleRequestError(w, endpoint, method, http.StatusNotFound, queries, "Directory not found")
 
 		return
 	}
@@ -36,17 +37,17 @@ func getFilesHandler(w http.ResponseWriter, r *http.Request) {
 
 	encoded, err := json.Marshal(filesModel)
 	if err != nil {
-		handleJSONParseError(w, endpoint, method)
+		handleInternalServerError(w, endpoint, method, queries, err)
 
 		return
 	}
 
 	_, err = w.Write(encoded)
 	if err != nil {
-		handleInternalServerError(w, endpoint, method, err)
+		handleInternalServerError(w, endpoint, method, queries, err)
 
 		return
 	}
 
-	loggingSuccess(method, endpoint, http.StatusOK)
+	loggingSuccess(method, endpoint, http.StatusOK, queries)
 }

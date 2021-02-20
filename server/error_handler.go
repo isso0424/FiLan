@@ -1,38 +1,25 @@
 package server
 
 import (
-	"fmt"
+	"errors"
 	"log"
 	"net/http"
 )
 
-func handleInvalidQuery(
-	w http.ResponseWriter,
-	endpoint string,
-	method string,
-	query string,
-) {
-	errorMessage := fmt.Sprintf("Required query parameters: %s\n", query)
-	handleRequestError(w, endpoint, method, http.StatusBadRequest, errorMessage)
-}
+const (
+	notEnoughQuery = "Required query parameters: %s"
+	failedParsingJSON = "Error occur in json parsing"
+)
 
-func handleJSONParseError(
-	w http.ResponseWriter,
-	endpoint string,
-	method string,
-) {
-	errorMessage := "error occur in json parsing"
-	handleRequestError(w, endpoint, method, http.StatusInternalServerError, errorMessage)
-}
-
-func handleRequestError(w http.ResponseWriter, endpoint string, method string, statusCode int, errorMessage string) {
-	log.Printf(logFormat, method, endpoint, statusCode, errorMessage)
+func handleRequestError(w http.ResponseWriter, endpoint string, method string, statusCode int, params []loggingQuery, errorMessage string) {
+	loggingFailed(method, endpoint, http.StatusInternalServerError, params, errors.New(errorMessage))
 
 	writeError(w, statusCode, errorMessage)
 }
 
-func handleInternalServerError(w http.ResponseWriter, endpoint string, method string, occurredErr error) {
+func handleInternalServerError(w http.ResponseWriter, endpoint string, method string, params []loggingQuery, occurredErr error) {
 	log.Printf(logFormat, method, endpoint, http.StatusInternalServerError, occurredErr)
+	loggingFailed(method, endpoint, http.StatusInternalServerError, params, occurredErr)
 
 	writeError(w, http.StatusInternalServerError, "internal server error")
 }
