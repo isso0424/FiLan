@@ -45,7 +45,15 @@ func convertFullPath(fullpath string) (string, string) {
 func (repo FileRepository) Save(file domain.File) error {
 	model := convertDomainToModel(file)
 
-	return repo.DB.Create(&model).Error
+	var receiver fileModel
+	err := repo.DB.Where("path = ?", model.Path).Where("name = ?", model.Name).First(&receiver).Error
+	if err != nil {
+		return repo.DB.Create(&model).Error
+	}
+
+	model.ID = receiver.ID
+
+	return repo.DB.Save(&model).Error
 }
 
 // Delete is file deleting function from db
