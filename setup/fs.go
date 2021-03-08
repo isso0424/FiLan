@@ -1,7 +1,7 @@
 package setup
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"path"
 )
@@ -22,7 +22,7 @@ func fsSetup(storageDir string) error {
 	}
 
 	storagePath := path.Join(cacheDir, storageDir)
-	fmt.Println(storagePath)
+	log.Printf("storage directory: %s\n", storagePath)
 
 	f, err := os.Stat(storagePath)
 	if err == nil {
